@@ -17,13 +17,13 @@ public class ProductController {
     private ProductService service;
 
     @GetMapping("/create")
-    public String createProductPost(@ModelAttribute Model model) {
+    public String createProductPage(Model model) {
         Product product = new Product();
         model.addAttribute("product", product);
         return "createProduct";
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public String createProductPost(@ModelAttribute Product product, Model model) {
         service.create(product);
         return "redirect:list";
