@@ -23,3 +23,5 @@ Clean code implementations:
 - Layout and Formatting are done using indentations and separation of code blocks using blank lines. This makes the program much more readable.
 - However, I haven't properly implemented error handling such as try-catches. Some of my methods still return null which can cause unexpected errors. This can be improved by using Optional classes to avoid returning null values.
 ## Reflection 2
+- Unit tests should be done in a way that it covers all public methods of a class. If a method has various results, then we should make separate tests that exercises each distinct result of that method. That way, we can have increased code coverage. However, 100% code coverage doesn't mean that our code has no bugs or errors. Code coverage indicates the lines of code that are executed during testing. Correctness depends on what we wrote on the unit test. Human error may be present when writing down unit test assertions. Sometimes we can make wrong logical assertions, which would result in a passed test while having incorrect or unintended behaviour.   
+- 
