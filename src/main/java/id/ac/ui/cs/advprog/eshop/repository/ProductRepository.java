@@ -27,21 +27,6 @@ public class ProductRepository {
         return productData.iterator();
     }
 
-    public void delete(String productId) {
-        Product productToDelete = null;
-
-        for(Product product : productData) {
-            if (product.getProductId().equals(productId)) {
-                productToDelete = product;
-                break;
-            }
-        }
-
-        if (productToDelete != null) {
-            productData.remove(productToDelete);
-        }
-    }
-
     public Product findById(String productId) {
         for (Product product : productData) {
             if (product.getProductId().equals(productId)) {
@@ -51,14 +36,23 @@ public class ProductRepository {
         return null;
     }
 
-    public Product edit(Product product) {
-        for (Product data : productData) {
-            if  (data.getProductId().equals(product.getProductId())) {
-                data.setProductName(product.getProductName());
-                data.setProductQuantity(product.getProductQuantity());
-                return data;
-            }
+    public void delete(String productId) {
+        Product productToDelete = findById(productId);
+
+        if (productToDelete != null) {
+            productData.remove(productToDelete);
         }
+    }
+
+    public Product edit(Product product) {
+        Product productToEdit = findById(product.getProductId());
+
+        if  (productToEdit != null) {
+            productToEdit.setProductName(product.getProductName());
+            productToEdit.setProductQuantity(product.getProductQuantity());
+            return productToEdit;
+        }
+
         return null;
     }
 }
