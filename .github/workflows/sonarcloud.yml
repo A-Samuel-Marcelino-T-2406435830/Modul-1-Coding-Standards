@@ -30,6 +30,6 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey=a-samuel-marcelino-t-2406435830
-            -Dsonar.organization=a-samuel-marcelino-t-2406435830
+            -Dsonar.projectKey=A-Samuel-Marcelino-T-2406435830_Modul-1-Coding-Standards
+            -Dsonar.organization=A-Samuel-Marcelino-T-2406435830
             -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml
