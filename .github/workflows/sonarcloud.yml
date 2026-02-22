@@ -34,3 +34,17 @@ jobs:
             -Dsonar.organization=a-samuel-marcelino-t-2406435830
             -Dsonar.java.binaries=build/classes/java/main
             -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml
+
+  deploy:
+    needs: sonar
+    runs-on: ubuntu-22.04
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Trigger Koyeb redeploy
+        env:
+          KOYEB_API_TOKEN: ${{ secrets.KOYEB_API_TOKEN }}
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer $KOYEB_API_TOKEN" \
+            https://app.koyeb.com/v1/services/adce6ff8-2661-4e60-8b08-7b374c6df1e1/redeploy
