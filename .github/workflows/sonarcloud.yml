@@ -2,6 +2,9 @@ name: SonarCloud code scan
 
 on:
   push:
+    branches:
+      - "**"
+  pull_request:
 
 jobs:
   sonar:
@@ -23,6 +26,9 @@ jobs:
 
       - name: Run tests and generate coverage
         run: ./gradlew test jacocoTestReport
+
+      - name: Build Spring Boot JAR
+        run: ./gradlew bootJar
 
       - name: Run SonarCloud analysis
         uses: SonarSource/sonarcloud-github-action@ffc3010689be73b8e5ae0c57ce35968afd7909e8
