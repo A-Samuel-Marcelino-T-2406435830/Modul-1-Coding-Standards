@@ -1,3 +1,34 @@
+# *Module 2 CI/CD & DevOps*
+Deployed url: https://flat-nat-a-samuel-marcelino-tindaon-2406435830-7209c7d2.koyeb.app/product/list
+## Reflection
+### Code Quality Issues
+When using sonarqube, one of the code quality issues that I got was a security hotspot on my sonarqube CI pipeline. 
+- Before, I wrote:
+```bash
+- name: Run SonarCloud analysis
+        uses: SonarSource/sonarcloud-github-action@v2n
+```
+In this case, sonarqube said that stating @v2 was a security hotspot because:
+- It is executing a third-party code
+- It is pulled from GitHub
+- It is inside a CI environment
+- It may have access to the secret SONAR_TOKEN
+
+A security hotspot by itself is not a vulnerability. However, it is a warning: running a third-party code has its own risks. The tag @v2 means that the external code I'm using may be subject to change and I won't be notified if I didn't check. This means that if the third-party code changes, it may cause unexpected errors in my repository. Worst case scenario is that the changes are malicious codes.
+
+The solution sonarqube gave me is use the SHA that points directly to the commit/release of that third-party code:
+```bash
+- name: Run SonarCloud analysis
+        uses: SonarSource/sonarcloud-github-action@ffc3010689be73b8e5ae0c57ce35968afd7909e8
+```
+This way, it guarantees that the third-party code that I'm using will not change and always point to that exact commit/release of that third-party code. Therefore, I won't have to worry if @v2 has changes to it.
+
+### CI/CD workflow review
+Based on the CI/CD workflows  currently have, I think they already implemented Continuous Integration and Continuous Deployment. First of all, tests are always ran on everytime changes are made. This automates testing and prevents human errors such as forgetting to test changes. Other than than, code quality is also checked by sonarqube and ossf scorecard. This means any code vulnerabilities, security hotspots, and code cleanliness are also checked everytime a change is commited. 
+
+Continuous deployment is implemented on the branch main. It will automatically redeploy the project to Koyeb when changes are made in main. However, those changes are guarded by the CI before. This means if the changes failed the CI, then the project won't be deployed. 
+
+
 # *Module 1 Coding Standards*
 
 ---
