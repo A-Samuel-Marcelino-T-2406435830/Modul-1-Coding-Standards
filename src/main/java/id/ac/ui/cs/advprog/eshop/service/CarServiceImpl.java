@@ -14,9 +14,15 @@ public class CarServiceImpl implements CarService {
     @Autowired
     private CarRepository carRepository;
 
+    @Autowired
+    private IdGenerator idGenerator;
+
     @Override
     public Car create(Car car) {
         // TODO Auto-generated method stub
+        if (car.getCarId() == null) {
+            car.setCarId(idGenerator.generateId());
+        }
         carRepository.create(car);
         return car;
     }
