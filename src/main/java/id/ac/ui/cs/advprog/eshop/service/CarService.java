@@ -5,7 +5,7 @@ import id.ac.ui.cs.advprog.eshop.model.Car;
 import java.util.List;
 
 public interface CarService {
-    Car createCar(Car car);
+    Car create(Car car);
     List<Car> findAll();
     Car findById(String id);
     public void update(String carId, Car car);
