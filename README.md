@@ -1,3 +1,64 @@
+# *Module 3 Maintainability & OO Principles*
+## Reflection
+### SRP
+- CarRepository is supposed to only handle connections with the database (in this case a list). However, the previous code
+includes the logic for inserting UUID into the Car object that is to be saved in the database. This adds another responsibility
+to CarRepository's method called create. To fix this problem, I separated the UUID insertion logic into 
+CarServiceImpl, whose responsibility is suited more for business logic. By doing this, CarRepository can keep its single
+responsibility of handling storage details. I also separated the logic for creating the UUID into a class called UuidGenerator.
+This helps separate the responsibility for creating and inserting the UUID.
+
+
+- Before, the class ProductController is extended by CarController. This makes CarController
+inherit all of ProductController's methods, which aren't necessary for CarController's logic. 
+This only mixes CarController's logic with ProductController, which gives it more responsibility.
+This clearly violates SRP, which states that classes should have single responsibility.
+To fix this problem, I separated the logic for Product and Car controller. Now we have
+the new class called CarController which specifically does the logic for Car's controller and doesn't extend ProductController.
+
+### OCP
+- The previous version of CarController and ProductController also violates OCP. Both of them have specific method names
+and endpoints. This prevents them from being Open to Extensions. To enable the Open principle, I changed the endpoint so that
+it has a format that can be extended. 
+
+### LSP
+- The same problem arises in CarController that extends ProductController, it also violates LSP. The logic of CarController 
+differs from ProductController. It technically can substitute ProductController since it extends all the methods, but the CarControllers
+methods can work if it is substitutes ProductController. This may result CarController logic working in a Product feature, which is not intended.
+To solve this, CarController no longer extends ProductController. Now, CarController is on its own.
+
+### ISP
+- The interfaces don't violate ISP. Each interface provides the required methods, and each class that implements it
+implements those methods nicely. No classes are forced to implement methods in a way that the implemented methods does nothing.
+
+
+### DIP
+- CarService used to reference the concrete class CarServiceImpl, which does not abide to DIP. I fixed this problem
+by changing the reference to the interface CarService instead.
+
+### Advantages
+- By separating responsibilities, we can easily reuse methods and fix errors. For example, I separated the logic for making UUID in 
+CarServiceImpl. CarServiceImpl now just inserts the UUID, while the class UuidGenerator creates the UUID. This way, we can make tests for 
+UuidGenerator to see if it actually creates intended UUID formats. 
+- Applying OCP really helps in expanding existing features into new ones. For example, the class Car is already open for extension. We can easily
+extend it into a new class such as RaceCar which can inherit Car's variables but then add a variable of its own such as maxSpeed. 
+- LSP also works well when we want to add new classes. In this project, there are no classes that extends other classes in a way that
+it became a new feature. But if we were to add a new feature and apply LSP, we can easily substitute their parent classes with this new feature if needed, and
+our program will work just fine.
+- Interface segregation so far isn't a problem in this project. Since all classes implements the methods properly. For example CarServiceImpl implements
+all CarService methods properly, not a single method left unused and logic is still safe. This way, interfaces are used properly and their methods are all used.
+- DIP is really convenient to have in a project. For example, CarController references CarService instead of CarServiceImpl. This makes the class loosely coupled and
+more flexible to change. Referencing to a lower level module such as interfaces gives more room and flexibility for the concrete class to make changes and make more methods, while preserving the business logic.
+### Disadvantages
+- If we don't separate the responsibility of methods or classes, then we would have a hard time testing the code. For example, if the logic
+for creating and inserting UUID is not separated, then if we made a mistake in creating the UUID, then it would be a hassle to check, since there is no direct method that we can test to see the created UUID.
+- If we don't apply OCP on our classes, extending into a new feature will be difficult. We can't reuse methods if they don't implement OCP. For example, 
+- If we don't apply LSP, adding a new feature can be exhausting, especially if it replaces a certain class. It may result in unintended logical errors.
+- Not implementing ISP will make classes implement methods that are not necessary for them. There will be methods with no logic, and this can lead to unintended logical errors, especially
+in a collaborative environment, where others might think the method actually does something, even though it's not properly implemented in the class.
+- Not implementing DIP can result in classes being tightly coupled by referencing concrete classes. Changes made to a class are not that flexible anymore. Other than that, unit testing becomes more
+complicated since the code is tied to more details, making it hard to isolate for tests.
+
 # *Module 2 CI/CD & DevOps*
 Deployed url: https://flat-nat-a-samuel-marcelino-tindaon-2406435830-7209c7d2.koyeb.app/product/list
 ## Reflection
